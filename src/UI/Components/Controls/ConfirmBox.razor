@@ -5,14 +5,14 @@
     <div class="modal fade show" id="@TagId" tabindex="-1" aria-modal="true" role="dialog" aria-hidden="true" style="display:block">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header@(BackgroundCssClass)">
                     <h4 class="modal-title">@Title</h4>
                     <button type="button" class="close" @onclick="@CloseModalAsync">&times;</button>
                 </div>
                 <div class="modal-body">
                     <p>@((MarkupString) Message)</p>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer@(BackgroundCssClass)">
                     <button type="button" class="btn btn-primary" @onclick="ConfirmActionAsync">@Localizer["Confirm"]</button>
                     <button type="button" class="btn btn-secondary" @onclick="@CloseModalAsync">@Localizer["Cancel"]</button>
                 </div>
@@ -23,6 +23,8 @@
 }
 
 @code {
+    private string _key { get; set; }
+    
     [Parameter]
     public string TagId { get; set; }
     [Parameter]
@@ -30,16 +32,18 @@
     [Parameter]
     public string Message { get; set; }
     [Parameter]
-    public EventCallback<string> OnConfirmAction { get; set; }
+    public string CssType { get; set; }
     [Parameter]
     public bool IsVisible { get; set; }
+    [Parameter]
+    public EventCallback<string> OnConfirmAction { get; set; }
 
-    private string _key { get; set; }
-
-    public async Task ShowConfirmAsync(string key, string message = null)
+    public async Task ShowConfirmAsync(string key, string message = null, string title = null, string cssType = null)
     {
         _key = key;
+        Title = title ?? Title;
         Message = message ?? Message;
+        CssType = cssType ?? cssType;
         IsVisible = true;
         await Task.CompletedTask;
     }
@@ -47,7 +51,10 @@
     public async Task CloseModalAsync()
     {
         IsVisible = false;
-        await OnConfirmAction.InvokeAsync(string.Empty);
+        if (OnConfirmAction.HasDelegate)
+        {
+            await OnConfirmAction.InvokeAsync(string.Empty);
+        }
     }
 
     public async Task ConfirmActionAsync()
@@ -55,4 +62,6 @@
         IsVisible = false;
         await OnConfirmAction.InvokeAsync(_key);
     }
+    
+    private string BackgroundCssClass => string.IsNullOrWhiteSpace(CssType) ? string.Empty : $" bg-{CssType}";
 }
