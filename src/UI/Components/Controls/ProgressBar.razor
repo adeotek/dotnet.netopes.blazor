@@ -1,0 +1,16 @@
+﻿<div class="progress" style="height: 25px;">
+  <div class="progress-bar" style="width: @Value%;">@Percent</div>
+</div>
+
+@code {
+    private string Percent => $"{Value} %";
+    
+    [Parameter]
+    public int Value { get; set; }
+
+    public void UpdateValue(int value)
+    {
+        Value = value;
+        StateHasChanged();
+    }
+}

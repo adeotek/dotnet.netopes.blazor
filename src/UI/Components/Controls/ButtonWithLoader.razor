@@ -1,0 +1,28 @@
+﻿<button class="@CssClass" disabled="@IsInRequestState" @onclick="OnClickCallback" type="@ButtonType">
+    @if (IsInRequestState)
+    {
+        <div class="spinner-border" role="status">
+            <span class="sr-only">...</span>
+        </div>    
+    }
+    else
+    {
+        <i class="@CssIcon" aria-hidden="true"></i>
+    }
+    @Content
+</button>
+
+@code {
+    [Parameter]
+    public string CssClass { get; set; }
+    [Parameter]
+    public string CssIcon { get; set; } = "oi empty";
+    [Parameter]
+    public string Content { get; set; }
+    [Parameter]
+    public bool IsInRequestState { get; set; }
+    [Parameter]
+    public string ButtonType { get; set; } = "submit";
+    [Parameter]
+    public EventCallback OnClickCallback { get; set; }
+}

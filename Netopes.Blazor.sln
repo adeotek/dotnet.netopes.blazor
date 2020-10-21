@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netopes.Blazor.UI", "src\UI\Netopes.Blazor.UI.csproj", "{A7FC4919-08DF-4132-B919-EA49DD1EE19E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7FC4919-08DF-4132-B919-EA49DD1EE19E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7FC4919-08DF-4132-B919-EA49DD1EE19E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7FC4919-08DF-4132-B919-EA49DD1EE19E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7FC4919-08DF-4132-B919-EA49DD1EE19E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

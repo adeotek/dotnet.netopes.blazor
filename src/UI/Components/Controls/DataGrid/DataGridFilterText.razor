@@ -1,0 +1,30 @@
+﻿<div class="form-group @(string.IsNullOrEmpty(CssClass) ? "col-12 col-md-3" : CssClass)">
+    <label>@Label</label>
+    <InputText @bind-Value="@Value" class="form-control" />
+</div>
+
+@code {
+    private string _value { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+    [Parameter]
+    public string CssClass { get; set; }
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public string Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value)
+            {
+                return;
+            }
+            _value = value;
+            ValueChanged.InvokeAsync(value);
+        }
+    }
+}

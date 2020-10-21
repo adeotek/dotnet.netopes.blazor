@@ -1,0 +1,58 @@
+﻿@inject IStringLocalizer<ConfirmBox> Localizer;
+
+@if (IsVisible)
+{
+    <div class="modal fade show" id="@TagId" tabindex="-1" aria-modal="true" role="dialog" aria-hidden="true" style="display:block">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">@Title</h4>
+                    <button type="button" class="close" @onclick="@CloseModalAsync">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>@((MarkupString) Message)</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @onclick="ConfirmActionAsync">@Localizer["Confirm"]</button>
+                    <button type="button" class="btn btn-secondary" @onclick="@CloseModalAsync">@Localizer["Cancel"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    [Parameter]
+    public string TagId { get; set; }
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string Message { get; set; }
+    [Parameter]
+    public EventCallback<string> OnConfirmAction { get; set; }
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    private string _key { get; set; }
+
+    public async Task ShowConfirmAsync(string key, string message = null)
+    {
+        _key = key;
+        Message = message ?? Message;
+        IsVisible = true;
+        await Task.CompletedTask;
+    }
+
+    public async Task CloseModalAsync()
+    {
+        IsVisible = false;
+        await OnConfirmAction.InvokeAsync(string.Empty);
+    }
+
+    public async Task ConfirmActionAsync()
+    {
+        IsVisible = false;
+        await OnConfirmAction.InvokeAsync(_key);
+    }
+}
