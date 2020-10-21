@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <OutputType>Library</OutputType>
-        <PackageId>NETopes.Blazor.UI</PackageId>
+        <PackageId>Netopes.Blazor.UI</PackageId>
         <PackageTags>netopes,blazor,ui</PackageTags>
         <Title>NETopes Blazor</Title>
         <Description>NETopes ASP.NET Core framework Blazor UI package</Description>
