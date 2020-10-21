@@ -1,0 +1,1 @@
+﻿.upload-drop-zone{border:1px dashed #c8ced3;padding:1.5rem;display:flex;align-items:center;justify-content:center;background-color:#f4f4f4;color:#aeaeae;font-size:1.5rem;cursor:pointer;margin:1.5rem 0 2rem 0;position:relative}.upload-drop-zone:hover{background-color:#e8e8e8}.upload-drop-zone input[type=file]{position:absolute;width:100%;height:100%;opacity:0;cursor:pointer}

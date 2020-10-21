@@ -1,0 +1,78 @@
+﻿@inject IStringLocalizer<DataGrid<TDataModel, TFiltersModel>> Localizer
+@using Microsoft.Extensions.Logging
+@typeparam TDataModel
+@typeparam TFiltersModel
+
+<DataGridFilters Model="@FiltersData" Error="@FiltersErrorMessage" FiltersApplyCallback="@FiltersApplyEventCallback" FiltersResetCallback="@FiltersResetEventCallback" ApplyButtonLabel="@Localizer["ApplyFilters"]" ResetButtonLabel="@Localizer["ResetFilters"]">
+    <FiltersFragment>
+        @FiltersFragment
+    </FiltersFragment>
+    <ExtraActionsFragment>
+        @ExtraFiltersActionsFragment
+    </ExtraActionsFragment>
+</DataGridFilters>
+@if (RowTemplateFragment != null && HeaderFragment != null && string.IsNullOrEmpty(ErrorMessage))
+{
+    <table class="table table-overflow-md table-bordered table-striped table-sm">
+        <thead>
+            @HeaderFragment
+        </thead>
+        <tbody>
+        @if ((Data?.Count() ?? 0) > 0)
+        {
+            foreach (var item in Data)
+            {
+                @RowTemplateFragment(item)
+            }
+        }
+        </tbody>
+    </table>
+    <DataGridPagination Data="@PaginationData" PageChangeCallback="PageChangeHandleAsync"></DataGridPagination>
+}
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="row">
+        <div class="col-12 mt-2 text-warning">@ErrorMessage</div>
+    </div>
+}
+@if (RowTemplateFragment == null || HeaderFragment == null)
+{
+    <div class="row">
+        <div class="col-12 mt-2 text-warning">@Localizer["Error: Invalid DataGrid configuration"]</div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<TDataModel> Data { get; set; } = new List<TDataModel>();
+    [Parameter]
+    public DataGridPaginationData PaginationData { get; set; } = new DataGridPaginationData();
+    [Parameter]
+    public TFiltersModel FiltersData { get; set; }
+    [Parameter]
+    public string ErrorMessage { get; set; }
+    [Parameter]
+    public string FiltersErrorMessage { get; set; }
+    
+    [Parameter]
+    public EventCallback<DataGridPaginationData> PageChangeEventCallback { get; set; }
+    [Parameter]
+    public EventCallback<TFiltersModel> FiltersApplyEventCallback { get; set; }
+    [Parameter]
+    public EventCallback FiltersResetEventCallback { get; set; }
+    
+    [Parameter]
+    public RenderFragment FiltersFragment { get; set; }
+    [Parameter]
+    public RenderFragment ExtraFiltersActionsFragment { get; set; }
+    [Parameter]
+    public RenderFragment HeaderFragment { get; set; }
+    [Parameter]
+    public RenderFragment<TDataModel> RowTemplateFragment { get; set; }
+
+    protected virtual async Task PageChangeHandleAsync(int pageNo)
+    {
+        PaginationData.CurrentPage = pageNo <= 0 && pageNo != -1 ? 1 : pageNo;
+        await PageChangeEventCallback.InvokeAsync(PaginationData);
+    }
+}

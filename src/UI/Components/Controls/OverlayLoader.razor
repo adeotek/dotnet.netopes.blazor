@@ -1,0 +1,27 @@
+﻿@if (_isLoading)
+{
+    <div id="overlay">
+        <div class="spinner-border text-primary spinner-position" role="status">
+            <span class="sr-only">@DefaultLabel</span>
+        </div>
+    </div>
+}
+
+@code {
+    private bool _isLoading { get; set; }
+    
+    [Parameter]
+    public string DefaultLabel { get; set; } = "Loading...";
+    
+    public void Show()
+    {
+        _isLoading = true;
+        StateHasChanged();
+    }
+
+    public void Hide()
+    {
+        _isLoading = false;
+        StateHasChanged();
+    }
+}

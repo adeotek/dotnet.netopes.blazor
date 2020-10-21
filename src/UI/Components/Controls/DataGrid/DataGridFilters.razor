@@ -1,0 +1,51 @@
+﻿@typeparam TDataModel
+
+<EditForm Model="@Model">
+    <div class="mb-4">
+        <div class="row">
+            @FiltersFragment
+        </div>
+        @if (!string.IsNullOrEmpty(Error))
+        {
+            <div class="row mt-1">
+                <div class="col-12 text-danger text-center">@Error</div>
+            </div>
+        }
+        <div class="row mt-1">
+            <div class="col-12">
+                <button class="btn btn-success" @onclick="ApplyFiltersHandleAsync"><i class="fa fa-filter"></i>@ApplyButtonLabel</button>
+                <button class="btn btn-dark" @onclick="ResetFiltersHandleAsync"><i class="fa fa-times"></i>@ResetButtonLabel</button>
+                @ExtraActionsFragment
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public TDataModel Model { get; set; }
+    [Parameter]
+    public RenderFragment FiltersFragment { get; set; }
+    [Parameter]
+    public RenderFragment ExtraActionsFragment { get; set; }
+    [Parameter]
+    public EventCallback<TDataModel> FiltersApplyCallback { get; set; }
+    [Parameter]
+    public EventCallback FiltersResetCallback { get; set; }
+    [Parameter]
+    public string Error { get; set; }
+    [Parameter]
+    public string ApplyButtonLabel { get; set; }
+    [Parameter]
+    public string ResetButtonLabel { get; set; }
+
+    private async Task ApplyFiltersHandleAsync()
+    {
+        await FiltersApplyCallback.InvokeAsync(Model);
+    }
+    
+    private async Task ResetFiltersHandleAsync()
+    {
+        await FiltersResetCallback.InvokeAsync(null);
+    }
+}

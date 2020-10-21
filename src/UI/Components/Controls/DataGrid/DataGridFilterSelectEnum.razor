@@ -1,0 +1,70 @@
+﻿@using Microsoft.Extensions.Logging
+@using Netopes.Core.Helpers.Extensions
+@inject IStringLocalizer<DataGridFilterSelectEnum<TEnum>> Localizer
+@typeparam TEnum
+
+<div class="form-group @(string.IsNullOrEmpty(CssClass) ? "col-12 col-md-3" : CssClass)">
+    <label>@Label</label>
+    <InputSelect @bind-Value="@Value" class="form-control">
+        @if (EmptyValue.Item1 != null)
+        {
+            <option value="@EmptyValue.Item2">@EmptyValue.Item1</option>
+        }
+        @if ((_items?.Count ?? 0) > 0)
+        {
+            @foreach (var (label, value) in _items)
+            {
+                @if (EmptyValue.Item1 != null && EmptyValue.Item2.Equals(value))
+                {
+                    continue;
+                }
+                <option value="@value">@Localizer[$"{typeof(TEnum).Name}:{label}"]</option>
+            }
+        }
+    </InputSelect>
+</div>
+
+@code {
+    private TEnum _value { get; set; }
+    private List<(string, TEnum)> _items { get; set; } = new List<(string, TEnum)>();
+
+    [Parameter]
+    public string Label { get; set; }
+    [Parameter]
+    public string CssClass { get; set; }
+    [Parameter]
+    public (string, TEnum) EmptyValue { get; set; } = (null, default);
+    [Parameter]
+    public EventCallback<TEnum> ValueChanged { get; set; }
+    [Parameter]
+    public TEnum Value
+    {
+        get => _value;
+        set
+        {
+            if (_value.Equals(value))
+            {
+                return;
+            }
+            _value = value;
+            ValueChanged.InvokeAsync(value);
+        }
+    }
+
+    [Inject]
+    private ILogger<DataGridFilterSelectEnum<TEnum>> _logger { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        try
+        {
+            _items = EnumExtensions<TEnum>.ToEnumerableTuples().ToList();
+        }
+        catch (Exception e)
+        {
+            _logger?.LogWarning(e, $"Unable to load {typeof(TEnum).Name} list!");
+            _items = new List<(string Name, TEnum Value)>();
+        }
+    }
+}

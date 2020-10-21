@@ -1,0 +1,65 @@
+﻿@using BlazorInputFile
+
+<div class="upload-drop-zone">
+    <InputFile OnChange="OnFilesUploadedHandleAsync" />
+    @_status
+</div>
+
+@code {
+    private string _status { get; set; }
+
+    [Parameter]
+    public string DefaultMessage { get; set; }
+    [Parameter]
+    public string UploadingMessage { get; set; } = "Uploading...";
+    [Parameter]
+    public int MaxFileSize { get; set; } = 5 * 1024 * 1024; // Maximum Size of 5MB
+    [Parameter]
+    public bool MultiFileUpload { get; set; } = true;
+    [Parameter]
+    public EventCallback<IFileListEntry> OnFileUploadedEventCallback { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        _status = DefaultMessage;
+    }
+
+    private async Task OnFilesUploadedHandleAsync(IFileListEntry[] files)
+    {
+        if ((files?.Length ?? 0) == 0)
+        {
+            _status = "No files uploaded";
+            return;
+        }
+        _status = UploadingMessage;
+        if (MultiFileUpload)
+        {
+            foreach (var file in files)
+            {
+                await ProcessUploadedFileAsync(file);
+            }    
+        }
+        else
+        {
+            await ProcessUploadedFileAsync(files.First());
+        }
+        _status = DefaultMessage;
+    }
+
+    private async Task ProcessUploadedFileAsync(IFileListEntry file)
+    {
+        if (file == null)
+        {
+            return;
+        }
+        
+        if (file.Size > MaxFileSize)
+        {
+            _status = $"{_status} <br/>\"{file.Name}\" is too big. Max file size is {MaxFileSize.ToString()} bytes.";
+            return;
+        }
+        
+        await OnFileUploadedEventCallback.InvokeAsync(file);
+    }
+}

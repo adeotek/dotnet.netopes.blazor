@@ -1,0 +1,66 @@
+﻿<div class="form-group @(string.IsNullOrEmpty(CssClass) ? "col-12 col-md-3" : CssClass)">
+    <label>@Label</label>
+    <InputSelect @bind-Value="@_stringValue" class="form-control">
+        @if (EmptyValue.Item1 != null)
+        {
+            <option value="@EmptyValue.Item2.ToString()">@EmptyValue.Item1</option>
+        }
+        @if ((Items?.Count ?? 0) > 0)
+        {
+            foreach (var (label, value) in Items)
+            {
+                <option value="@value.ToString()">@label</option>
+            }
+        }
+    </InputSelect>
+</div>
+
+@code {
+    private Guid _value { get; set; }
+    private string _stringValue
+    {
+        get => _value.ToString();
+        set
+        {
+            Guid newValue;
+            try
+            {
+                if (!Guid.TryParse(value, out newValue))
+                {
+                    newValue = Guid.Empty;
+                }
+            }
+            catch (Exception)
+            {
+                newValue = Guid.Empty;
+            }
+
+            Value = newValue;
+        }
+    }
+
+    [Parameter]
+    public string Label { get; set; }
+    [Parameter]
+    public string CssClass { get; set; }
+    [Parameter]
+    public List<(string, Guid)> Items { get; set; } = new List<(string, Guid)>();
+    [Parameter]
+    public (string, Guid) EmptyValue { get; set; } = (null, Guid.Empty);
+    [Parameter]
+    public EventCallback<Guid> ValueChanged { get; set; }
+    [Parameter]
+    public Guid Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value)
+            {
+                return;
+            }
+            _value = value;
+            ValueChanged.InvokeAsync(value);
+        }
+    }
+}

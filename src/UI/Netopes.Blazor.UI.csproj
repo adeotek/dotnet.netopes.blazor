@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <OutputType>Library</OutputType>
+        <PackageId>NETopes.Blazor.UI</PackageId>
+        <PackageTags>netopes,blazor,ui</PackageTags>
+        <Title>NETopes Blazor</Title>
+        <Description>NETopes ASP.NET Core framework Blazor UI package</Description>
+        <Product>NETopes Blazor UI</Product>
+        <Company>AdeoTEK Software SRL</Company>
+        <Authors>George Benjamin-Schonberger</Authors>
+        <Copyright>Copyright © AdeoTEK Software SRL 2021</Copyright>
+        <AssemblyVersion>1.0.0.19</AssemblyVersion>
+        <FileVersion>1.0.0.19</FileVersion>
+        <Version>1.0.0</Version>
+        <PackageProjectUrl>https://github.com/adeotek/dotnet.netopes.blazor/</PackageProjectUrl>
+        <PackageLicense>https://github.com/adeotek/dotnet.netopes.blazor/blob/main/README.md</PackageLicense>
+        <RepositoryUrl>https://github.com/adeotek/dotnet.netopes.blazor/</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageIcon>PackageIcon.png</PackageIcon>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageVersion>1.0.0-beta.1</PackageVersion>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Localization" Version="5.0.0-rc.2.20475.17" />
+        <PackageReference Include="BlazorInputFile" Version="0.2.0" />
+        <PackageReference Include="NETopes.Core.Helpers" Version="1.0.0-beta.1"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../../LICENSE">
+            <Pack>True</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+        <None Include="../../assets/PackageIcon.png">
+            <Pack>True</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+    </ItemGroup>
+
+</Project>

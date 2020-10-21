@@ -1,0 +1,53 @@
+﻿@inject IStringLocalizer<MessageBox> Localizer;
+
+@if (IsVisible)
+{
+    <div class="modal fade show" id="@TagId" tabindex="-1" aria-modal="true" role="dialog" aria-hidden="true" style="display:block">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header@(BackgroundCssClass)">
+                    <h4 class="modal-title">@Title</h4>
+                    <button type="button" class="close" @onclick="@CloseModalAsync">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>@((MarkupString) Message)</p>
+                </div>
+                <div class="modal-footer@(BackgroundCssClass)">
+                    <button type="button" class="btn btn-secondary" @onclick="@CloseModalAsync">@Localizer["Close"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    [Parameter]
+    public string TagId { get; set; }
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string Message { get; set; }
+    [Parameter]
+    public string CssType { get; set; }
+    [Parameter]
+    public bool IsVisible { get; set; }
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    public async Task ShowMessageAsync(string message, string cssType)
+    {
+        Message = message ?? throw new ArgumentNullException(nameof(message));
+        CssType = cssType;
+        IsVisible = true;
+        await Task.CompletedTask;
+    }
+
+    public async Task CloseModalAsync()
+    {
+        IsVisible = false;
+        await OnClose.InvokeAsync(null);
+    }
+
+    private string BackgroundCssClass => string.IsNullOrWhiteSpace(CssType) ? string.Empty : $" bg-{CssType}";
+}
