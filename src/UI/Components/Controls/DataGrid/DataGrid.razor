@@ -3,7 +3,7 @@
 @typeparam TDataModel
 @typeparam TFiltersModel
 
-<DataGridFilters Model="@FiltersData" Error="@FiltersErrorMessage" FiltersApplyCallback="@FiltersApplyEventCallback" FiltersResetCallback="@FiltersResetEventCallback" ApplyButtonLabel="@Localizer["ApplyFilters"]" ResetButtonLabel="@Localizer["ResetFilters"]">
+<DataGridFilters Model="@FiltersData" Error="@FiltersErrorMessage" ApplyFiltersCallback="@FiltersApplyEventCallback" ResetFiltersCallback="@FiltersResetEventCallback" ApplyButtonLabel="@Localizer["ApplyFilters"]" ResetButtonLabel="@Localizer["ResetFilters"]">
     <FiltersFragment>
         @FiltersFragment
     </FiltersFragment>
