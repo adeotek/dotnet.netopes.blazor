@@ -1,0 +1,27 @@
+﻿@using Netopes.Blazor.UI.Components.Controls
+
+<div class="form-group @(string.IsNullOrEmpty(ContainerCssClass) ? "col-12 col-md-3" : ContainerCssClass)">
+    <label>@Label</label>
+    <DateTimePicker Value="@Value" ValueChanged="OnValueChanged" CssClass="@CssClass" Format="@Format"/>
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; }
+    [Parameter]
+    public string ContainerCssClass { get; set; }
+    [Parameter]
+    public string CssClass { get; set; }
+    [Parameter]
+    public string Format { get; set; }
+    [Parameter]
+    public DateTime? Value { get; set; }
+    [Parameter]
+    public EventCallback<DateTime?> ValueChanged { get; set; }
+
+    private void OnValueChanged(DateTime? value)
+    {
+        Value = value;
+        ValueChanged.InvokeAsync(Value);
+    }
+}

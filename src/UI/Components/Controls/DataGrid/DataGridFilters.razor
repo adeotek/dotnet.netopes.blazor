@@ -29,9 +29,7 @@
     [Parameter]
     public RenderFragment ExtraActionsFragment { get; set; }
     [Parameter]
-    public EventCallback<TDataModel> ApplyFiltersCallback { get; set; }
-    [Parameter]
-    public EventCallback ResetFiltersCallback { get; set; }
+    public EventCallback<bool> FiltersApplyCallback { get; set; }
     [Parameter]
     public string Error { get; set; }
     [Parameter]
@@ -41,11 +39,11 @@
 
     private async Task ApplyFiltersHandleAsync()
     {
-        await ApplyFiltersCallback.InvokeAsync(Model);
+        await FiltersApplyCallback.InvokeAsync(false);
     }
     
     private async Task ResetFiltersHandleAsync()
     {
-        await ResetFiltersCallback.InvokeAsync(null);
+        await FiltersApplyCallback.InvokeAsync(true);
     }
 }

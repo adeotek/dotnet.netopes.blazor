@@ -1,0 +1,14 @@
+﻿<span class="@FullCssClass" data-value="@Value">@Text</span>
+
+@code {
+    [Parameter]
+    public string Value { get; set; }
+    [Parameter]
+    public string Text { get; set; }
+    [Parameter]
+    public bool IsSelected { get; set; }
+    [Parameter]
+    public string CssClass { get; set; }
+
+    private string FullCssClass => $"dropdown-item{(IsSelected ? " selected" : string.Empty)}{(string.IsNullOrWhiteSpace(CssClass) ? string.Empty : $" {CssClass}")}";
+}

@@ -23,3 +23,12 @@
     opacity: 0;
     cursor: pointer;
 }
+
+.datepicker-btn {
+    cursor: pointer;
+}
+
+.smart-combo-box {
+    display: block;
+    width: 100%;
+}
