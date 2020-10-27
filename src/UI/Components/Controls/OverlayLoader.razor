@@ -13,17 +13,27 @@
     [Parameter]
     public string DefaultLabel { get; set; } = "Loading...";
     
-    public async Task Show()
+    public void Show()
     {
         _isLoading = true;
         StateHasChanged();
+    }
+    
+    public async Task ShowAsync()
+    {
+        Show();
         await Task.Delay(1);
     }
 
-    public async Task Hide()
+    public void Hide()
     {
         _isLoading = false;
         StateHasChanged();
+    }
+    
+    public async Task HideAsync()
+    {
+        Hide();
         await Task.Delay(1);
     }
 }
