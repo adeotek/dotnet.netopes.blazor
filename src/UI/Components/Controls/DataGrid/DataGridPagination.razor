@@ -1,6 +1,6 @@
 ﻿@inject IStringLocalizer<DataGridPagination> Localizer
 
-<div class="row">
+<div class="blazor-ui-pagination row">
     <div class="col-12 col-md-6">
         <nav>
             <ul class="pagination">
@@ -20,7 +20,7 @@
         </nav>
     </div>
     <div class="col-12 col-md-6">
-        <div class="text-right pagination-summary">
+        <div class="pagination-summary text-right">
             @if (Data.PagesNo > 0)
             {
                 <span class="font-italic">@Localizer["Page"]</span>
@@ -54,61 +54,6 @@
         </div>
     </div>
 </div>
-
-@* <nav> *@
-@*     <div class="row"> *@
-@*         <div class="col-12 col-md-6"> *@
-@*             <ul class="pagination"> *@
-@*                 <li class="page-item"> *@
-@*                     <button class="btn btn-outline-info i-only mr-1" disabled="@(Data.CurrentPage < 2)" @onclick="@(() => PageChangeHandlerAsync(1))"><i class="fa fa-angle-double-left"></i></button> *@
-@*                 </li> *@
-@*                 <li class="page-item"> *@
-@*                     <button class="btn btn-outline-info i-only mr-1" disabled="@(Data.CurrentPage < 2)" @onclick="@(() => PageChangeHandlerAsync(--Data.CurrentPage))"><i class="fa fa-angle-left"></i></button> *@
-@*                 </li> *@
-@*                 <li class="page-item"> *@
-@*                     <button class="btn btn-outline-primary i-only mr-1" disabled="@(Data.CurrentPage == Data.PagesNo || Data.PagesNo < 2 || Data.CurrentPage == -1)" @onclick="@(() => PageChangeHandlerAsync(++Data.CurrentPage))"><i class="fa fa-angle-right"></i></button> *@
-@*                 </li> *@
-@*                 <li class="page-item"> *@
-@*                     <button class="btn btn-outline-primary i-only mr-1" disabled="@(Data.CurrentPage == Data.PagesNo || Data.PagesNo < 2 || Data.CurrentPage == -1)" @onclick="@(() => PageChangeHandlerAsync(Data.PagesNo))"><i class="fa fa-angle-double-right"></i></button> *@
-@*                 </li> *@
-@*             </ul> *@
-@*         </div> *@
-@*         <div class="col-12 col-md-6"> *@
-@*             <div class="text-right pagination-summary"> *@
-@*                 @if (Data.PagesNo > 0) *@
-@*                 { *@
-@*                     <span class="font-italic">@Localizer["Page"]</span> *@
-@*                     <select class="font-weight-bold" @onchange="GoToPageHandlerAsync"> *@
-@*                         @for (var pag = 1; pag <= Data.PagesNo; pag++) *@
-@*                         { *@
-@*                             if (Data.CurrentPage == pag) *@
-@*                             { *@
-@*                                 <option value="@pag" selected="selected">@pag</option> *@
-@*                             } *@
-@*                             else *@
-@*                             { *@
-@*                                 <option value="@pag">@pag</option> *@
-@*                             } *@
-@*                         } *@
-@*                         @if (Data.CurrentPage == -1) *@
-@*                         { *@
-@*                             <option value="-1" selected="selected">@Localizer["Pages:All"]</option> *@
-@*                         } *@
-@*                         else *@
-@*                         { *@
-@*                             <option value="-1">@Localizer["Pages:All"]</option> *@
-@*                         } *@
-@*                     </select> *@
-@*                     <span>&nbsp;/&nbsp;</span> *@
-@*                     <span class="font-weight-bold">@Data.PagesNo</span> *@
-@*                     <span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span> *@
-@*                 } *@
-@*                 <span class="font-weight-bold">@Data.TotalRecords</span> *@
-@*                 <span>&nbsp;@Localizer["Records"]</span> *@
-@*             </div> *@
-@*         </div> *@
-@*     </div> *@
-@* </nav> *@
 
 @code {
     [Parameter]
