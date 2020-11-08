@@ -1,0 +1,27 @@
+﻿@if (Action?.Type == UIActionTypes.Event)
+{
+    <button class="@_cssClass" @onclick="OnActionClickAsync">
+        <i class="@Action.Icon"></i>@Action.Name
+    </button>    
+}
+else
+{
+    <a class="@_cssClass" href="@Action.Url">
+        <i class="@Action.Icon"></i>@Action.Name
+    </a>    
+}
+
+@code {
+    [Parameter]
+    public UIAction Action { get; set; }
+
+    private string _cssClass => Action?.CssClass ?? "btn btn-link";
+    
+    private async Task OnActionClickAsync()
+    {
+        if (Action?.Event != null && Action.Event.HasDelegate)
+        {
+            await Action.Event.InvokeAsync(null);
+        }
+    }
+}
