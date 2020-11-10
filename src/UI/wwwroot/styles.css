@@ -90,6 +90,11 @@
 }
 
 .breadcrumb .breadcrumb-menu {
+    display: flex;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-align: center;
+    align-items: center;
     margin-left: auto;
     margin-right: 0;
     line-height: 1.5;
