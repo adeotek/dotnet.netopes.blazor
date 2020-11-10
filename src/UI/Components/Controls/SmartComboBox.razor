@@ -1,0 +1,48 @@
+﻿@typeparam TValue
+
+<div class="dropdown">
+    <div class="input-group">
+        <input type="text" class="form-control" value="@Text" @onchange="OnInputChange" />
+        <div class="input-group-append">
+            <span class="input-group-text" @onclick="OnDropdownButtonClick"><i class="fas fa-chevron-down"></i></span>
+        </div>
+    </div>
+    @if (_isDropdownVisible)
+    {
+        <div class="dropdown-menu smart-combo-box">
+            <div class="smart-combo-messages"></div>
+            <SmartComboBoxOption Text="Option 1" Value="1" />
+            <SmartComboBoxOption Text="Option 2" Value="2" />
+            <SmartComboBoxOption Text="Option 3" Value="3" />
+            <SmartComboBoxOption Text="Option 4" Value="4" />
+        </div>
+    }    
+</div>
+
+@code {
+    private bool _isDropdownVisible { get; set; }
+    private string _stringValue => Value.Equals(default(TValue)) ? null : Value.ToString();
+    
+    [Parameter]
+    public TValue Value { get; set; }
+    [Parameter]
+    public EventCallback<TValue> ValueChanged { get; set; }
+    [Parameter]
+    public EventCallback<TValue> OnChange { get; set; }
+    [Parameter]
+    public string CssClass { get; set; }
+    [Parameter]
+    public string Text { get; set; }
+
+    private async Task OnInputChange(ChangeEventArgs e)
+    {
+        await Task.CompletedTask;
+    }
+
+    private async Task OnDropdownButtonClick()
+    {
+        _isDropdownVisible = !_isDropdownVisible;
+        StateHasChanged();
+        await Task.CompletedTask;
+    }
+}

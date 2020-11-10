@@ -1,6 +1,6 @@
 ﻿@if (_isLoading)
 {
-    <div id="overlay">
+    <div id="overlay" class="blazor-ui">
         <div class="spinner-border text-primary spinner-position" role="status">
             <span class="sr-only">@DefaultLabel</span>
         </div>
@@ -18,10 +18,22 @@
         _isLoading = true;
         StateHasChanged();
     }
+    
+    public async Task ShowAsync()
+    {
+        Show();
+        await Task.Delay(1);
+    }
 
     public void Hide()
     {
         _isLoading = false;
         StateHasChanged();
+    }
+    
+    public async Task HideAsync()
+    {
+        Hide();
+        await Task.Delay(1);
     }
 }

@@ -3,14 +3,17 @@
 @typeparam TDataModel
 @typeparam TFiltersModel
 
-<DataGridFilters Model="@FiltersData" Error="@FiltersErrorMessage" FiltersApplyCallback="@FiltersApplyEventCallback" FiltersResetCallback="@FiltersResetEventCallback" ApplyButtonLabel="@Localizer["ApplyFilters"]" ResetButtonLabel="@Localizer["ResetFilters"]">
-    <FiltersFragment>
-        @FiltersFragment
-    </FiltersFragment>
-    <ExtraActionsFragment>
-        @ExtraFiltersActionsFragment
-    </ExtraActionsFragment>
-</DataGridFilters>
+@if (ApplyFiltersEventCallback.HasDelegate && !FiltersData.Equals(default))
+{
+    <DataGridFilters Model="@FiltersData" Error="@FiltersErrorMessage" FiltersApplyCallback="@ApplyFiltersEventCallback" ApplyButtonLabel="@Localizer["ApplyFilters"]" ResetButtonLabel="@Localizer["ResetFilters"]">
+        <FiltersFragment>
+            @FiltersFragment
+        </FiltersFragment>
+        <ExtraActionsFragment>
+            @ExtraFiltersActionsFragment
+        </ExtraActionsFragment>
+    </DataGridFilters>    
+}
 @if (RowTemplateFragment != null && HeaderFragment != null && string.IsNullOrEmpty(ErrorMessage))
 {
     <table class="table table-overflow-md table-bordered table-striped table-sm">
@@ -57,10 +60,7 @@
     [Parameter]
     public EventCallback<DataGridPaginationData> PageChangeEventCallback { get; set; }
     [Parameter]
-    public EventCallback<TFiltersModel> FiltersApplyEventCallback { get; set; }
-    [Parameter]
-    public EventCallback FiltersResetEventCallback { get; set; }
-    
+    public EventCallback<bool> ApplyFiltersEventCallback { get; set; }
     [Parameter]
     public RenderFragment FiltersFragment { get; set; }
     [Parameter]

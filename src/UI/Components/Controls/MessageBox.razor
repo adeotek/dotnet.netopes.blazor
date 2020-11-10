@@ -33,20 +33,31 @@
     [Parameter]
     public bool IsVisible { get; set; }
     [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+    [Parameter]
     public EventCallback OnClose { get; set; }
-
-    public async Task ShowMessageAsync(string message, string cssType)
+    
+    public async Task ShowMessageAsync(string message, string cssType = null, string title = null)
     {
         Message = message ?? throw new ArgumentNullException(nameof(message));
-        CssType = cssType;
+        Title = title ?? Title;
+        CssType = cssType ?? CssType;
         IsVisible = true;
+        StateHasChanged();
         await Task.CompletedTask;
     }
 
     public async Task CloseModalAsync()
     {
         IsVisible = false;
-        await OnClose.InvokeAsync(null);
+        if (OnClose.HasDelegate)
+        {
+            await OnClose.InvokeAsync(null);    
+        }
+        else
+        {
+            StateHasChanged();
+        }
     }
 
     private string BackgroundCssClass => string.IsNullOrWhiteSpace(CssType) ? string.Empty : $" bg-{CssType}";

@@ -1,4 +1,38 @@
-﻿.upload-drop-zone {
+﻿/*** START Controls ***/
+.datepicker-btn {
+    cursor: pointer;
+}
+
+.progress.blazor-ui {
+    height: 1.5rem;
+}
+/*** END Controls ***/
+
+/*** START Overlay ***/
+#overlay.blazor-ui {
+    background: #ffffff;
+    color: #666666;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 5000;
+    top: 0;
+    left: 0;
+    float: left;
+    text-align: center;
+    padding-top: 25%;
+    opacity: 0.8;
+}
+
+.blazor-ui .spinner-position {
+    position:absolute;
+    left: 50%;
+    top: 50%;
+}
+/*** END Overlay ***/
+
+/*** START File uploader ***/
+.upload-drop-zone.blazor-ui {
     border: 1px dashed #c8ced3;
     padding: 1.5rem;
     display: flex;
@@ -12,14 +46,69 @@
     position: relative;
 }
 
-.upload-drop-zone:hover {
+.upload-drop-zone.blazor-ui:hover {
     background-color: #e8e8e8;
 }
 
-.upload-drop-zone input[type=file] {
+.upload-drop-zone.blazor-ui input[type=file] {
     position: absolute;
     width: 100%;
     height: 100%;
     opacity: 0;
     cursor: pointer;
 }
+/*** END File uploader ***/
+
+/* START Pagination */
+.blazor-ui-pagination .pagination-summary {
+    margin-bottom: 1rem;
+    padding: 7px 0;
+}
+
+.blazor-ui-pagination .pagination-summary span {
+    line-height: 1.5;
+}
+
+.blazor-ui-pagination .pagination-summary select {
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #1a1a1a;
+    padding-left: 1rem;
+    cursor: pointer;
+}
+/* END Pagination */
+
+/*** START Breadcrumbs ***/
+.breadcrumb {
+    margin: 0;
+    border: 0;
+    width: 100%;
+}
+
+.breadcrumb .breadcrumb-item {
+    line-height: 1.5;
+}
+
+.breadcrumb .breadcrumb-menu {
+    display: flex;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 0;
+    line-height: 1.5;
+    border-bottom: 0;
+}
+
+.breadcrumb .breadcrumb-menu .btn {
+    margin-right: 1rem;
+}
+/*** END Breadcrumbs ***/
+
+/*** START SmartComboBox ***/
+.smart-combo-box {
+    display: block;
+    width: 100%;
+}
+/*** END SmartComboBox ***/
