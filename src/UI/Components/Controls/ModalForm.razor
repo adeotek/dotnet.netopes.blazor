@@ -1,0 +1,106 @@
+﻿@using Toolbelt.Blazor.Forms
+@typeparam TModel
+@inject IStringLocalizer<ModalForm<TModel>> Localizer;
+
+@if (IsVisible)
+{
+    <div class="modal fade show" id="@TagId" tabindex="-1" aria-modal="true" role="dialog" aria-hidden="true" style="display:block">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header@(BackgroundCssClass)">
+                    <h4 class="modal-title">@Title</h4>
+                    <button type="button" class="close" @onclick="@CloseModalAsync">&times;</button>
+                </div>
+                <EditForm Model="@Model" OnValidSubmit="OnFormSubmitAsync">
+                    <div class="modal-body">
+                        <LocalizedDataAnnotationsValidator />
+                        @FormFragment
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <ValidationSummary/>
+                                @if (FormMessages.Count > 0)
+                                {
+                                    <ul>
+                                        @foreach (var message in FormMessages)
+                                        {
+                                            <li class="@(message.IsError ? "text-danger" : "text-success")">@message.Message</li>
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer@(BackgroundCssClass)">
+                        <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                        <button type="button" class="btn btn-secondary" @onclick="@CloseModalAsync">@Localizer["Close"]</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    [Parameter]
+    public string TagId { get; set; }
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string CssType { get; set; }
+    [Parameter]
+    public bool IsVisible { get; set; }
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+    [Parameter]
+    public TModel Model { get; set; }
+    [Parameter]
+    public EventCallback<TModel> ModelChanged { get; set; }
+    [Parameter]
+    public List<FormMessage> FormMessages { get; set; } = new List<FormMessage>();
+    [Parameter]
+    public RenderFragment FormFragment { get; set; }
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+    [Parameter]
+    public EventCallback<TModel> OnValidSubmit { get; set; }
+    
+    public async Task ShowModalAsync(TModel model, string title = null, string cssType = null)
+    {
+        Model = model;
+        Title = title ?? Title;
+        CssType = cssType ?? CssType;
+        IsVisible = true;
+        StateHasChanged();
+        await Task.CompletedTask;
+    }
+    
+    public async Task ShowModalAsync(string title = null, string cssType = null)
+    {
+        Title = title ?? Title;
+        CssType = cssType ?? CssType;
+        IsVisible = true;
+        StateHasChanged();
+        await Task.CompletedTask;
+    }
+
+    public async Task CloseModalAsync()
+    {
+        IsVisible = false;
+        if (OnClose.HasDelegate)
+        {
+            await OnClose.InvokeAsync(null);    
+        }
+        else
+        {
+            StateHasChanged();
+        }
+    }
+
+    private string BackgroundCssClass => string.IsNullOrWhiteSpace(CssType) ? string.Empty : $" bg-{CssType}";
+
+    private async Task OnFormSubmitAsync()
+    {
+        await OnValidSubmit.InvokeAsync(Model);
+    }
+}

@@ -1,31 +1,19 @@
 ﻿<ol class="breadcrumb">
-    @if ((Parents?.Count ?? 0) > 0)
-    {
-        foreach (var parent in Parents.Where(parent => parent.Type == UIActionTypes.Route))
-        {
-            <BreadcrumbsParent Action="@parent"></BreadcrumbsParent>
-        }
-    }
+    @ParentsFragment
     <li class="breadcrumb-item active">@Name</li>
-    <li class="breadcrumb-menu">
-        @if ((Actions?.Count ?? 0) > 0)
-        {
-            foreach (var action in Actions)
-            {
-                <BreadcrumbsAction Action="@action"></BreadcrumbsAction>
-            }
-        }
-        @ContextSelectorFragment
-    </li>
+    @if (ActionsFragment != null)
+    {
+        <li class="breadcrumb-menu">
+            @ActionsFragment
+        </li>
+    }
 </ol>
 
 @code {
     [Parameter]
     public string Name { get; set; }
     [Parameter]
-    public List<UIAction> Parents { get; set; } = new List<UIAction>();
+    public RenderFragment ParentsFragment { get; set; }
     [Parameter]
-    public List<UIAction> Actions { get; set; } = new List<UIAction>();
-    [Parameter]
-    public RenderFragment ContextSelectorFragment { get; set; }
+    public RenderFragment ActionsFragment { get; set; }
 }

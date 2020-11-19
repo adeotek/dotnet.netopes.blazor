@@ -1,7 +1,11 @@
 ﻿<li class="breadcrumb-item">
-    <a href="@Action.Url" class="@(Action?.CssClass)">@Action.Name</a>
+    <a href="@Url" class="@(CssClass)">@Name</a>
 </li>
 @code {
     [Parameter]
-    public UIAction Action { get; set; }
+    public string Name { get; set; }
+    [Parameter]
+    public string CssClass { get; set; }
+    [Parameter]
+    public string Url { get; set; }
 }
