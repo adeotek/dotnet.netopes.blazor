@@ -14,6 +14,5 @@ namespace Netopes.Blazor.UI.Models
         public string Name { get; set; }
         public string Icon { get; set; }
         public string Route { get; set; }
-        public EventCallback<string> Event { get; set; }
     }
 }
