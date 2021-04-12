@@ -44,7 +44,7 @@
     [Parameter]
     public string CssClass { get; set; }
     [Parameter]
-    public List<(string, Guid)> Items { get; set; } = new List<(string, Guid)>();
+    public List<(string, Guid)> Items { get; set; } = new();
     [Parameter]
     public (string, Guid) EmptyValue { get; set; } = (null, Guid.Empty);
     [Parameter]

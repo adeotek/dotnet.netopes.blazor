@@ -1,0 +1,31 @@
+﻿@using Radzen.Blazor
+@using Radzen
+@using Microsoft.AspNetCore.Components
+
+<div class="form-group @(string.IsNullOrEmpty(ContainerCssClass) ? "col-12 col-md-3" : ContainerCssClass)">
+    <label>@Label</label>
+    <RadzenDropDown TValue="IEnumerable<Guid>" @bind-Value="@Value" Change="OnValueChanged" Multiple="true" AllowClear="true" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Placeholder="@Placeholder" Data="@Items" TextProperty="Value" ValueProperty="Key" class="@CssClass" />
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; }
+    [Parameter]
+    public string Placeholder { get; set; }
+    [Parameter]
+    public string ContainerCssClass { get; set; }
+    [Parameter]
+    public string CssClass { get; set; }
+    [Parameter]
+    public List<KeyValuePair<Guid, string>> Items { get; set; } = new();
+    [Parameter]
+    public IEnumerable<Guid> Value { get; set; }
+    [Parameter]
+    public EventCallback<IEnumerable<Guid>> ValueChanged { get; set; }
+
+    private void OnValueChanged(object value)
+    {
+        Value = value is IEnumerable<Guid> selection ? selection : new List<Guid>();
+        ValueChanged.InvokeAsync(Value);
+    }
+}

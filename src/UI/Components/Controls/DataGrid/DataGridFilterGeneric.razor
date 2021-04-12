@@ -1,0 +1,15 @@
+﻿<div class="form-group @(string.IsNullOrEmpty(ContainerCssClass) ? "col-12 col-md-3" : ContainerCssClass)">
+    <label>@Label</label>
+    <FiltersContent>
+        @FiltersContent
+    </FiltersContent>
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; }
+    [Parameter]
+    public string ContainerCssClass { get; set; }
+    [Parameter]
+    public RenderFragment FiltersContent { get; set; }
+}

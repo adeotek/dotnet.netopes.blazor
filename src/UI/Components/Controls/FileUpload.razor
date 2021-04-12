@@ -1,12 +1,18 @@
-﻿@using BlazorInputFile
-
-<div class="upload-drop-zone blazor-ui">
-    <InputFile OnChange="OnFilesUploadedHandleAsync" />
+﻿<div class="upload-drop-zone blazor-ui">
+    @if (MultiFileUpload)
+    {
+        <InputFile OnChange="@OnFilesUploadedHandleAsync" multiple />
+    }
+    else
+    {
+        <InputFile OnChange="@OnFilesUploadedHandleAsync"/>
+    }
     @_status
 </div>
 
 @code {
     private string _status { get; set; }
+    private List<IBrowserFile> _uploadedFiles { get; } = new();
 
     [Parameter]
     public string DefaultMessage { get; set; }
@@ -17,7 +23,11 @@
     [Parameter]
     public bool MultiFileUpload { get; set; } = true;
     [Parameter]
-    public EventCallback<IFileListEntry> OnFileUploadedEventCallback { get; set; }
+    public int MaxAllowedFiles { get; set; } = 3;
+    [Parameter]
+    public EventCallback<IBrowserFile> OnFileUploadedEventCallback { get; set; }
+    [Parameter]
+    public EventCallback<IEnumerable<IBrowserFile>> OnFilesUploadedEventCallback { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -25,29 +35,38 @@
         _status = DefaultMessage;
     }
 
-    private async Task OnFilesUploadedHandleAsync(IFileListEntry[] files)
+    private async Task OnFilesUploadedHandleAsync(InputFileChangeEventArgs e)
     {
-        if ((files?.Length ?? 0) == 0)
+        _status = UploadingMessage;
+        _uploadedFiles.Clear();
+       
+        if (MultiFileUpload)
+        {
+            foreach (var file in e.GetMultipleFiles(MaxAllowedFiles))
+            {
+                await ProcessUploadedFileAsync(file);
+            }
+        }
+        else
+        {
+            await ProcessUploadedFileAsync(e.File);
+        }
+        
+        if (_uploadedFiles.Count == 0)
         {
             _status = "No files uploaded";
             return;
         }
-        _status = UploadingMessage;
-        if (MultiFileUpload)
+
+        if (OnFilesUploadedEventCallback.HasDelegate)
         {
-            foreach (var file in files)
-            {
-                await ProcessUploadedFileAsync(file);
-            }    
+            await OnFilesUploadedEventCallback.InvokeAsync(_uploadedFiles);
         }
-        else
-        {
-            await ProcessUploadedFileAsync(files.First());
-        }
+
         _status = DefaultMessage;
     }
-
-    private async Task ProcessUploadedFileAsync(IFileListEntry file)
+    
+    private async Task ProcessUploadedFileAsync(IBrowserFile file)
     {
         if (file == null)
         {
@@ -59,7 +78,12 @@
             _status = $"{_status} <br/>\"{file.Name}\" is too big. Max file size is {MaxFileSize.ToString()} bytes.";
             return;
         }
+
+        _uploadedFiles.Add(file);
         
-        await OnFileUploadedEventCallback.InvokeAsync(file);
+        if (OnFileUploadedEventCallback.HasDelegate)
+        {
+            await OnFileUploadedEventCallback.InvokeAsync(file);
+        }
     }
 }
