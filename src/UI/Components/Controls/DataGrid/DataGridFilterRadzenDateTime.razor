@@ -1,0 +1,33 @@
+﻿@using Radzen.Blazor
+
+<div class="form-group @(string.IsNullOrEmpty(ContainerCssClass) ? "col-12 col-md-3" : ContainerCssClass)">
+    <label>@Label</label>
+    <RadzenDatePicker TValue="DateTime?" @bind-Value="@Value" Change="OnValueChanged" ShowTime="@ShowTime" HoursStep="@HoursStep.ToString()" MinutesStep="@MinutesStep.ToString()" DateFormat="@Format" class="@CssClass" />
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; }
+    [Parameter]
+    public string ContainerCssClass { get; set; }
+    [Parameter]
+    public string CssClass { get; set; }
+    [Parameter]
+    public string Format { get; set; }
+    [Parameter]
+    public bool ShowTime { get; set; }
+    [Parameter]
+    public int HoursStep { get; set; } = 1;
+    [Parameter]
+    public int MinutesStep { get; set; } = 1;
+    [Parameter]
+    public DateTime? Value { get; set; }
+    [Parameter]
+    public EventCallback<DateTime?> ValueChanged { get; set; }
+
+    private void OnValueChanged(DateTime? value)
+    {
+        Value = value;
+        ValueChanged.InvokeAsync(Value);
+    }
+}

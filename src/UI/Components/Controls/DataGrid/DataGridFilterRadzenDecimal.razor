@@ -1,0 +1,31 @@
+﻿@using Radzen.Blazor
+
+<div class="form-group @(string.IsNullOrEmpty(ContainerCssClass) ? "col-12 col-md-3" : ContainerCssClass)">
+    <label>@Label</label>
+    <RadzenNumeric TValue="decimal?" @bind-Value="@Value" Change="OnValueChanged" ShowUpDown="@ShowUpDown" Min="@MinValue" Max="@MaxValue" class="@CssClass" />
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; }
+    [Parameter]
+    public string ContainerCssClass { get; set; }
+    [Parameter]
+    public string CssClass { get; set; }
+    [Parameter]
+    public decimal? MinValue { get; set; }
+    [Parameter]
+    public decimal? MaxValue { get; set; }
+    [Parameter]
+    public bool ShowUpDown { get; set; }
+    [Parameter]
+    public decimal? Value { get; set; }
+    [Parameter]
+    public EventCallback<decimal?> ValueChanged { get; set; }
+
+    private void OnValueChanged(decimal? value)
+    {
+        Value = value;
+        ValueChanged.InvokeAsync(Value);
+    }
+}
