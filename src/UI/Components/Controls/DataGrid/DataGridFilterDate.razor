@@ -1,8 +1,8 @@
-﻿@using Netopes.Blazor.UI.Components.Controls
+﻿@using Radzen.Blazor
 
 <div class="form-group @(string.IsNullOrEmpty(ContainerCssClass) ? "col-12 col-md-3" : ContainerCssClass)">
     <label>@Label</label>
-    <DateTimePicker Value="@Value" ValueChanged="OnValueChanged" CssClass="@CssClass" Format="@Format"/>
+    <RadzenDatePicker Value="@Value" ValueChanged="OnValueChanged" TValue="DateTime?" ShowTime="@ShowTime" HoursStep="1" MinutesStep="1" DateFormat="@Format" class="@CssClass" />
 </div>
 
 @code {
@@ -14,6 +14,8 @@
     public string CssClass { get; set; }
     [Parameter]
     public string Format { get; set; }
+    [Parameter]
+    public bool ShowTime { get; set; }
     [Parameter]
     public DateTime? Value { get; set; }
     [Parameter]

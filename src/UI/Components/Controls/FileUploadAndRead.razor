@@ -1,4 +1,6 @@
 ﻿@using System.IO
+@using Netopes.Core.Abstraction.Models
+
 <div class="upload-drop-zone blazor-ui">
     @if (MultiFileUpload)
     {
@@ -13,7 +15,7 @@
 
 @code {
     private string _status { get; set; }
-    private List<(IBrowserFile, string)> _uploadedFiles { get; } = new();
+    private List<UploadedFile> _uploadedFiles { get; } = new();
 
     [Parameter]
     public string DefaultMessage { get; set; }
@@ -26,9 +28,9 @@
     [Parameter]
     public int MaxAllowedFiles { get; set; } = 3;
     [Parameter]
-    public EventCallback<(IBrowserFile file, string content)> OnFileUploadedEventCallback { get; set; }
+    public EventCallback<UploadedFile> OnFileUploadedEventCallback { get; set; }
     [Parameter]
-    public EventCallback<IEnumerable<(IBrowserFile file, string content)>> OnFilesUploadedEventCallback { get; set; }
+    public EventCallback<IEnumerable<UploadedFile>> OnFilesUploadedEventCallback { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -43,9 +45,23 @@
        
         if (MultiFileUpload)
         {
-            foreach (var file in e.GetMultipleFiles(MaxAllowedFiles))
+            try
             {
-                await ProcessUploadedFileAsync(file);
+                foreach (var file in e.GetMultipleFiles(MaxAllowedFiles))
+                {
+                    await ProcessUploadedFileAsync(file);
+                }
+            }
+            catch (InvalidOperationException ioe)
+            {
+                _status = ioe.Message;
+                return;
+            }
+            catch (Exception fe)
+            {
+                _uploadedFiles.Clear();
+                _status = fe.Message;
+                return;
             }
         }
         else
@@ -79,14 +95,13 @@
             _status = $"{_status} <br/>\"{file.Name}\" is too big. Max file size is {MaxFileSize.ToString()} bytes.";
             return;
         }
-        
-        using var reader = new StreamReader(file.OpenReadStream(MaxFileSize));
-        var content = await reader.ReadToEndAsync();
-        _uploadedFiles.Add((file, content));
+
+        var uploadedFile = new UploadedFile(file.Name, file.LastModified, file.Size, file.ContentType, new StreamReader(file.OpenReadStream(MaxFileSize)));
+        _uploadedFiles.Add(uploadedFile);
         
         if (OnFileUploadedEventCallback.HasDelegate)
         {
-            await OnFileUploadedEventCallback.InvokeAsync((file, content));
+            await OnFileUploadedEventCallback.InvokeAsync(uploadedFile);
         }
     }
 }

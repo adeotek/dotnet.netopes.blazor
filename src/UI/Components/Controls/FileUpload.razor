@@ -42,9 +42,23 @@
        
         if (MultiFileUpload)
         {
-            foreach (var file in e.GetMultipleFiles(MaxAllowedFiles))
+            try
             {
-                await ProcessUploadedFileAsync(file);
+                foreach (var file in e.GetMultipleFiles(MaxAllowedFiles))
+                {
+                    await ProcessUploadedFileAsync(file);
+                }
+            }
+            catch (InvalidOperationException ioe)
+            {
+                _status = ioe.Message;
+                return;
+            }
+            catch (Exception fe)
+            {
+                _uploadedFiles.Clear();
+                _status = fe.Message;
+                return;
             }
         }
         else
