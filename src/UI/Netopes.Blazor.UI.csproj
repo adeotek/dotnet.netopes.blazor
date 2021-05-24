@@ -28,7 +28,7 @@
         <PackageReference Include="Microsoft.Extensions.Localization" Version="5.0.6" />
         <PackageReference Include="Radzen.Blazor" Version="3.3.1" />
         <PackageReference Include="Toolbelt.Blazor.LocalizedDataAnnotationsValidator" Version="1.0.1.1" />
-        <PackageReference Include="NETopes.Core.Helpers" Version="1.0.2" />
+        <PackageReference Include="NETopes.Core.Helpers" Version="1.0.3" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
