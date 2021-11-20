@@ -11,7 +11,7 @@ namespace Netopes.Blazor.UI.Models
         [JsonIgnore]
         public int PagesNo => (int) Math.Ceiling((double) TotalRecords / RowsPerPage);
         
-        public (int, int) GetPaginationOffset()
+        public (int offset, int rowsPerPage) GetPaginationOffset()
         {
             if (CurrentPage == -1)
             {
@@ -20,7 +20,7 @@ namespace Netopes.Blazor.UI.Models
             
             if (CurrentPage < 1)
             {
-                return RowsPerPage > 0 ? (-1, RowsPerPage) : (-1, -1);
+                return RowsPerPage > 0 ? (0, RowsPerPage) : (-1, -1);
             }
 
             return RowsPerPage > 0 ? ((CurrentPage - 1) * RowsPerPage, RowsPerPage) : (-1, -1);

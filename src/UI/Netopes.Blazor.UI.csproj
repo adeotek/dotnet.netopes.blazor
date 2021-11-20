@@ -11,16 +11,16 @@
         <Company>AdeoTEK Software SRL</Company>
         <Authors>George Benjamin-Schonberger</Authors>
         <Copyright>Copyright © AdeoTEK Software SRL 2021</Copyright>
-        <AssemblyVersion>1.6.0.33</AssemblyVersion>
-        <FileVersion>1.6.0.33</FileVersion>
-        <Version>1.6.0</Version>
+        <AssemblyVersion>1.6.1.34</AssemblyVersion>
+        <FileVersion>1.6.1.34</FileVersion>
+        <Version>1.6.1</Version>
         <PackageProjectUrl>https://github.com/adeotek/dotnet.netopes.blazor/</PackageProjectUrl>
         <PackageLicense>https://github.com/adeotek/dotnet.netopes.blazor/blob/main/README.md</PackageLicense>
         <RepositoryUrl>https://github.com/adeotek/dotnet.netopes.blazor/</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageIcon>PackageIcon.png</PackageIcon>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <PackageVersion>1.6.0</PackageVersion>
+        <PackageVersion>1.6.1</PackageVersion>
     </PropertyGroup>
 
 
